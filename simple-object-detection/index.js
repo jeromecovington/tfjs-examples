@@ -39,15 +39,22 @@ const TRUE_BOUNDING_BOX_STYLE = 'rgb(255,0,0)';
 const PREDICT_BOUNDING_BOX_LINE_WIDTH = 2;
 const PREDICT_BOUNDING_BOX_STYLE = 'rgb(0,0,255)';
 
+/**
+ * Draw representations of the true and predict bounding boxes on the canvas.
+ *
+ * @param {HTMLElement} canvas The canvas element.
+ * @param {Array} trueBoundingBox Left, right, top, bottom of true bounding box.
+ * @param {Array} predictBoundingBox Left, right, top, bottom of predict bounding box.
+ */
 function drawBoundingBoxes(canvas, trueBoundingBox, predictBoundingBox) {
   tf.util.assert(
-      trueBoundingBox != null && trueBoundingBox.length === 4,
-      `Expected boundingBoxArray to have length 4, ` +
+      Array.isArray(trueBoundingBox) && trueBoundingBox.length === 4,
+      `Expected trueBoundingBox to have length 4, ` +
           `but got ${trueBoundingBox} instead`);
   tf.util.assert(
-      predictBoundingBox != null && predictBoundingBox.length === 4,
-      `Expected boundingBoxArray to have length 4, ` +
-          `but got ${trueBoundingBox} instead`);
+      Array.isArray(predictBoundingBox) && predictBoundingBox.length === 4,
+      `Expected predictBoundingBox to have length 4, ` +
+          `but got ${predictBoundingBox} instead`);
 
   let left = trueBoundingBox[0];
   let right = trueBoundingBox[1];
@@ -103,7 +110,7 @@ async function runAndVisualizeInference(model) {
   const numLineSegments = 10;
   const {images, targets} = await synth.generateExampleBatch(
       numExamples, numCircles, numLineSegments);
-  
+
   const t0 = tf.util.now();
   // Runs inference with the model.
   const modelOut = await model.predict(images).data();

@@ -60,7 +60,7 @@ const LABEL_MULTIPLIER = tf.tensor1d([CANVAS_SIZE, 1, 1, 1, 1]);
  *   true and predicted bounding boxes.
  * @param {tf.Tensor} yTrue True labels. Shape: [batchSize, 5].
  *   The first column is a 0-1 indicator for whether the shape is a triangle
- *   (0) or a rectangle (1). The remaining for columns are the bounding boxes
+ *   (0) or a rectangle (1). The remaining four columns are the bounding boxes
  *   for the target shape: [left, right, top, bottom], in unit of pixels.
  *   The bounding box values are in the range [0, CANVAS_SIZE).
  * @param {tf.Tensor} yPred Predicted labels. Shape: the same as `yTrue`.
@@ -155,9 +155,11 @@ async function buildObjectDetectionModel() {
   const numLines = 10;
 
   const parser = new argparse.ArgumentParser();
-  parser.addArgument(
-      '--numExamples',
-      {type: 'int', defaultValue: 2000, help: 'Number of training exapmles'});
+  parser.addArgument('--numExamples', {
+    type: 'int',
+    defaultValue: 2000,
+    help: 'Number of training examples'
+  });
   parser.addArgument('--validationSplit', {
     type: 'float',
     defaultValue: 0.15,
